@@ -2,7 +2,7 @@
  * @Description: 
  * @version: 0.0.1
  * @Author: yulinZ
- * @LastEditTime: 2023-06-16 18:03:29
+ * @LastEditTime: 2023-06-16 18:13:00
 -->
 <template>
   <article class="card">
@@ -107,14 +107,15 @@ import { ref, defineOptions } from "vue";
   transform: translateX(3px);
 }
 
-// 头顶标签
+
+//
 .card span {
   position: absolute;
   overflow: hidden;
   width: 150px;
   height: 150px;
   top: -10px;
-  right: -10px;
+  left: -10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,7 +132,7 @@ import { ref, defineOptions } from "vue";
     #ffb144 51%,
     #ff7053 100%
   );
-  transform: rotate(45deg) translateY(-20px);
+  transform: rotate(-45deg) translateY(-20px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,7 +148,7 @@ import { ref, defineOptions } from "vue";
   position: absolute;
   width: 10px;
   bottom: 0;
-  right: 0;
+  left: 0;
   height: 10px;
   z-index: -1;
   box-shadow: 140px -140px #cc3f47;
