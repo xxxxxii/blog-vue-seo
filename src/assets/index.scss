@@ -1,2 +1,24 @@
+$border-shad:0px 0px 16px 10px rgb(0 0 0 / 3%);
+
+$right-width:20vw;
+
 @import "./button.scss";
 @import "./style.scss";
+
+@media screen and (max-width: 826px) {
+    .app-body {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    .group-box-fixed {
+      position: static !important;
+      width: 100% !important;
+      margin: 0 !important;
+    }
+    .catalog{
+        display: none;
+    }
+    #preview-only {
+      width: calc(100vw - 32px) !important;
+    }
+  }

@@ -5,14 +5,27 @@
  * @LastEditTime: 2023-06-16 18:13:00
 -->
 <template>
-  <article class="card">
-    <span></span>
-    <h3 class="card__title">Title</h3>
+  <div class="card">
+    <span class="is-top" v-if="isTop"></span>
+    <h3 class="card__title cp" @click="toUrl()">{{ title }}</h3>
     <p class="card__content">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      {{ content }}
     </p>
-    <div class="card__date">April 15, 2022</div>
-    <div class="card__arrow">
+    <div class="card__date">
+      {{ dateTime }}
+      <v-chip class="cp" color="secondary">
+        <Icon :icon="group?.icon"></Icon>
+        {{ group?.name }}
+      </v-chip>
+
+      <span> </span>
+    </div>
+    <div class="card-labels">
+      <span class="cp" v-for="item in labels" :key="item?.id"
+        >{{ item?.name }} <v-divider class="ms-3" inset vertical></v-divider
+      ></span>
+    </div>
+    <div class="card__arrow cp" @click="toUrl()">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -26,7 +39,7 @@
         ></path>
       </svg>
     </div>
-  </article>
+  </div>
 </template>
 
 <script lang="ts">
@@ -36,23 +49,46 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, defineOptions } from "vue";
+import { ref, defineEmits } from "vue";
+import { Icon } from "@iconify/vue";
+
+interface groupDto {
+  icon?: string;
+  name?: string;
+}
+
+const props = defineProps<{
+  isTop?: boolean;
+  title: string;
+  content: string;
+  dateTime: string;
+  url?: string;
+  group?: groupDto | any;
+  labels: Array<object | any>;
+}>();
+
+const emit = defineEmits(["toUrl"]);
+
+const toUrl = () => emit("toUrl", props?.url);
 </script>
 
 <style scoped lang="scss">
 /* this card is inspired form this - https://georgefrancis.dev/ */
+@import "@/assets/index.scss";
 .card {
   --border-radius: 0.75rem;
   --primary-color: #7257fa;
   --secondary-color: #3c3852;
-  width: 100%;
-  font-family: "Arial";
   padding: 1rem;
-  cursor: pointer;
   border-radius: var(--border-radius);
-  //   background: #f1f1f3;
-  box-shadow: 0px 8px 16px 0px rgb(0 0 0 / 3%);
+  box-shadow: $border-shad;
   position: relative;
+  h3 {
+    display: inline-flex;
+  }
+}
+.cp {
+  cursor: pointer;
 }
 
 .card > * + * {
@@ -62,14 +98,26 @@ import { ref, defineOptions } from "vue";
 .card .card__content {
   //   color: var(--secondary-color);
   font-size: 0.86rem;
+  overflow: hidden; //超出的文本隐藏
+  display: -webkit-box;
+  -webkit-line-clamp: 2; // 超出多少行
+  -webkit-box-orient: vertical;
 }
 
 .card .card__title {
   padding: 0;
   font-size: 1.3rem;
   font-weight: bold;
+  overflow: hidden; //超出的文本隐藏
+  display: -webkit-box;
+  -webkit-line-clamp: 1; // 超出多少行
+  -webkit-box-orient: vertical;
 }
-
+.card-labels {
+  font-size: 0.8rem;
+  font-weight: 300;
+  margin-top: 4px;
+}
 .card .card__date {
   color: #6e6b80;
   font-size: 0.8rem;
@@ -107,32 +155,31 @@ import { ref, defineOptions } from "vue";
   transform: translateX(3px);
 }
 
-
 //
-.card span {
+.card .is-top {
   position: absolute;
   overflow: hidden;
-  width: 150px;
-  height: 150px;
-  top: -10px;
-  left: -10px;
+  width: 80px;
+  height: 80px;
+  top: -6px;
+  right: -6px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.card span::before {
-  content: "Premium";
+.card .is-top::before {
+  content: "置顶";
   position: absolute;
   width: 150%;
-  height: 40px;
+  height: 20px;
   background-image: linear-gradient(
     45deg,
     #ff6547 0%,
     #ffb144 51%,
     #ff7053 100%
   );
-  transform: rotate(-45deg) translateY(-20px);
+  transform: rotate(45deg) translateY(-10px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -143,15 +190,15 @@ import { ref, defineOptions } from "vue";
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.23);
 }
 
-.card span::after {
+.card .is-top::after {
   content: "";
   position: absolute;
-  width: 10px;
+  width: 6px;
   bottom: 0;
-  left: 0;
-  height: 10px;
+  right: 0;
+  height: 6px;
   z-index: -1;
-  box-shadow: 140px -140px #cc3f47;
+  box-shadow: -74px -74px #cc3f47;
   background-image: linear-gradient(
     45deg,
     #ff512f 0%,
